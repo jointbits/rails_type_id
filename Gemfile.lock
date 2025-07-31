@@ -32,7 +32,7 @@ GEM
     regexp_parser (2.10.0)
     require-hooks (0.2.2)
     rexml (3.4.1)
-    rubocop (1.77.0)
+    rubocop (1.79.1)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -40,12 +40,15 @@ GEM
       parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 2.9.3, < 3.0)
-      rubocop-ast (>= 1.45.1, < 2.0)
+      rubocop-ast (>= 1.46.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 4.0)
-    rubocop-ast (1.45.1)
+    rubocop-ast (1.46.0)
       parser (>= 3.3.7.2)
       prism (~> 1.4)
+    rubocop-sorbet (0.10.5)
+      lint_roller
+      rubocop (>= 1.75.2)
     ruby-progressbar (1.13.0)
     sorbet (0.5.12366)
       sorbet-static (= 0.5.12366)
@@ -89,7 +92,8 @@ DEPENDENCIES
   minitest (~> 5.16)
   rails_type_id!
   rake (~> 13.0)
-  rubocop (~> 1.21)
+  rubocop (~> 1.79.1)
+  rubocop-sorbet (~> 0.10.5)
   sorbet
   sorbet-runtime
   tapioca (~> 0.17.7)
