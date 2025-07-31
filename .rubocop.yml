@@ -8,6 +8,12 @@ AllCops:
   Exclude:
     - 'vendor/**/*'
 
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
 Sorbet/HasSigil:
   Enabled: true
   MinimumStrictness: true

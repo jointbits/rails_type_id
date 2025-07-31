@@ -15,6 +15,7 @@ module RailsTypeId
 
     class InvalidTypeIdPrefix < StandardError; end
 
+    # Checks validity of the ActiveRecord model instances
     class Validator < ActiveModel::Validator
       def validate(record)
         result = Helpers.validate_type_id_prefix(record.class.type_id_prefix)
@@ -67,7 +68,7 @@ module RailsTypeId
 
           return nil if prefix.match(/\A[a-z]{1,10}\z/)
 
-          return "type_id_prefix must be lowercase alphabetic (a-z) with length >= 1, <= 10"
+          "type_id_prefix must be lowercase alphabetic (a-z) with length >= 1, <= 10"
         end
 
         def validate_type_id_prefix!(prefix)
@@ -111,8 +112,8 @@ module RailsTypeId
           # This has to be group_by and not index_by because we can have multiple
           # models that use the same prefix (like Settings)
           @prefix_map ||= ActiveRecord::Base.descendants
-            .select { |klass| klass.respond_to?(:type_id_prefix) }
-            .group_by(&:type_id_prefix)
+                                            .select { |klass| klass.respond_to?(:type_id_prefix) }
+                                            .group_by(&:type_id_prefix)
         end
       end
     end

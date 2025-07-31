@@ -9,12 +9,16 @@ require "rails_type_id"
 require "minitest/autorun"
 
 # Set up sqlite3 database for tests
-ActiveRecord::Base.establish_connection({
-  adapter: :sqlite3,
-  database: "storage/test.sqlite3"
-})
+ActiveRecord::Base.establish_connection(
+  {
+    adapter: :sqlite3,
+    database: "storage/test.sqlite3"
+  }
+)
 
 WithModel.runner = :minitest
 
-class ActiveSupport::TestCase < Minitest::Test
+module ActiveSupport
+  class TestCase < Minitest::Test
+  end
 end

@@ -23,6 +23,7 @@ class TestConcern < ActiveSupport::TestCase
 
     model do
       include RailsTypeId::Concern
+
       with_type_id_prefix("wp")
     end
   end
