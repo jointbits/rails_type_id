@@ -11,5 +11,5 @@ gem "rake", "~> 13.0"
 gem "rubocop", "~> 1.21"
 gem "sorbet", group: :development
 gem "sorbet-runtime"
-gem "tapioca", require: false, group: [:development, :test]
+gem "tapioca", "~> 0.17.7", require: false, group: [:development, :test]
 
