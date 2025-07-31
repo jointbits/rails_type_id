@@ -812,6 +812,9 @@ module RuboCop::AST::CollectionNode
   def entries(*_arg0, **_arg1, &_arg2); end
 
   # source://rubocop-ast//lib/rubocop/ast/node/mixin/collection_node.rb#13
+  def extract_options!(*_arg0, **_arg1, &_arg2); end
+
+  # source://rubocop-ast//lib/rubocop/ast/node/mixin/collection_node.rb#13
   def fetch(*_arg0, **_arg1, &_arg2); end
 
   # source://rubocop-ast//lib/rubocop/ast/node/mixin/collection_node.rb#13
@@ -1055,10 +1058,22 @@ module RuboCop::AST::CollectionNode
   def to_ary(*_arg0, **_arg1, &_arg2); end
 
   # source://rubocop-ast//lib/rubocop/ast/node/mixin/collection_node.rb#13
+  def to_formatted_s(*_arg0, **_arg1, &_arg2); end
+
+  # source://rubocop-ast//lib/rubocop/ast/node/mixin/collection_node.rb#13
+  def to_fs(*_arg0, **_arg1, &_arg2); end
+
+  # source://rubocop-ast//lib/rubocop/ast/node/mixin/collection_node.rb#13
   def to_h(*_arg0, **_arg1, &_arg2); end
 
   # source://rubocop-ast//lib/rubocop/ast/node/mixin/collection_node.rb#13
+  def to_sentence(*_arg0, **_arg1, &_arg2); end
+
+  # source://rubocop-ast//lib/rubocop/ast/node/mixin/collection_node.rb#13
   def to_set(*_arg0, **_arg1, &_arg2); end
+
+  # source://rubocop-ast//lib/rubocop/ast/node/mixin/collection_node.rb#13
+  def to_xml(*_arg0, **_arg1, &_arg2); end
 
   # source://rubocop-ast//lib/rubocop/ast/node/mixin/collection_node.rb#13
   def transpose(*_arg0, **_arg1, &_arg2); end

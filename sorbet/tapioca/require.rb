@@ -1,4 +1,10 @@
 # typed: true
 # frozen_string_literal: true
 
-# Add your extra requires here (`bin/tapioca require` can be used to boostrap this list)
+require "active_model"
+require "active_support"
+require "minitest/autorun"
+require "rails/all"
+require "sorbet-runtime"
+require "typeid"
+require "with_model"
