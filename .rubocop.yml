@@ -1,5 +1,12 @@
+plugins:
+  - rubocop-sorbet
+
 AllCops:
   TargetRubyVersion: 3.1
+
+Sorbet/HasSigil:
+  Enabled: true
+  MinimumStrictness: true
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes

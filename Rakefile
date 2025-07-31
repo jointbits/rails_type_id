@@ -9,4 +9,8 @@ require "rubocop/rake_task"
 
 RuboCop::RakeTask.new
 
-task default: %i[test rubocop]
+task :sorbet do
+  sh "bin/srb"
+end
+
+task default: %i[test rubocop sorbet]
