@@ -32,7 +32,7 @@ module Tapioca
             klass.create_module(RBI_MODULE_NAME) do |methods_mod|
               methods_mod.create_method(
                 "type_id",
-                return_type: "TypeID",
+                return_type: "TypeID"
               )
             end
             klass.create_include(RBI_MODULE_NAME)
