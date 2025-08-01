@@ -1,4 +1,4 @@
-# typed: ignore # rubocop:disable Sorbet
+# typed: false # rubocop:disable Sorbet/HasSigil
 # frozen_string_literal: true
 
 require "active_model"
