@@ -1,4 +1,4 @@
-# typed: ignore # rubocop:disable Sorbet
+# typed: true
 # frozen_string_literal: true
 
 module RailsTypeId

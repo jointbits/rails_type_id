@@ -1,4 +1,4 @@
-# typed: ignore # rubocop:disable Sorbet
+# typed: false
 # frozen_string_literal: true
 
 require "active_model"
