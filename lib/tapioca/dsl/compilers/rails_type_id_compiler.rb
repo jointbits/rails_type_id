@@ -34,6 +34,11 @@ module Tapioca
                 "type_id",
                 return_type: "TypeID"
               )
+
+              methods_mod.create_method(
+                "to_param",
+                return_type: "String"
+              )
             end
             klass.create_include(RBI_MODULE_NAME)
           end

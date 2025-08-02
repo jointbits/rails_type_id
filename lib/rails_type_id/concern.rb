@@ -33,6 +33,10 @@ module RailsTypeId
       def type_id_prefix
         @_type_id_prefix
       end
+
+      def from_controller_id_param(type_id_str)
+        self.find(TypeID.from_string(type_id_str).uuid.to_s)
+      end
     end
 
     included do
@@ -55,6 +59,10 @@ module RailsTypeId
         when :uuid, :string
           self.id ||= SecureRandom.uuid_v7
         end
+      end
+
+      define_method :to_param do
+        type_id.to_s
       end
     end
 
