@@ -35,7 +35,7 @@ module RailsTypeId
       end
 
       def from_controller_id_param(type_id_str)
-        self.find(TypeID.from_string(type_id_str).uuid.to_s)
+        find(TypeID.from_string(type_id_str).uuid.to_s)
       end
     end
 
