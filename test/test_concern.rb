@@ -57,4 +57,9 @@ class TestConcern < ActiveSupport::TestCase
       end
     end
   end
+
+  def test_to_param
+    item_with = WithPrefix.create!
+    assert(item_with.to_param.start_with?("wp_"))
+  end
 end
