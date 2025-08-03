@@ -59,7 +59,7 @@ class MigrateUserToUUID < ActiveRecord::Migration[8.0]
         add_column :sessions, :user_uuid, :text, null: true
 
         Users.find_each do |u|
-            u.update(uuid: SecureRandom.uuid_v7)
+            u.update(uuid: RailsTypeId::Concern::Helpers.generate_type_id("user"))
         end
         Session.find_each do |s|
             s.update(user_uuid: s.user.uuid)

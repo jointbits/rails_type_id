@@ -56,7 +56,7 @@ module RailsTypeId
       # @return [void]
       define_method :generate_type_id do
         Helpers.validate_type_id_prefix!(self.class.type_id_prefix)
-        self.id ||= TypeID.from_uuid(self.class.type_id_prefix, SecureRandom.uuid_v7).to_s
+        self.id ||= Helpers.generate_type_id(self.class.type_id_prefix).to_s
       end
     end
 
@@ -65,6 +65,10 @@ module RailsTypeId
       extend T::Sig
 
       class << self
+        def generate_type_id(prefix)
+          TypeID.from_uuid(prefix, SecureRandom.uuid_v7)
+        end
+
         def validate_type_id_prefix(prefix)
           return "type_id_prefix cannot be nil" if prefix.nil?
 
