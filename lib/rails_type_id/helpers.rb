@@ -6,6 +6,7 @@ require "sorbet-runtime"
 module RailsTypeId
   class InvalidTypeIdPrefix < StandardError; end
 
+  # Helper methods for interacting with type IDs
   class Helpers
     class << self
       extend T::Sig
@@ -43,7 +44,7 @@ module RailsTypeId
         nil
       end
 
-      sig { params(type_id: String).returns(T.nilable(T::Array[T.untyped]))}
+      sig { params(type_id: String).returns(T.nilable(T::Array[T.untyped])) }
       def lookup_model(type_id)
         prefix = TypeID.from_string(type_id).prefix
         return if prefix.nil?
