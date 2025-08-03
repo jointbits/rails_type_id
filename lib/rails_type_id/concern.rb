@@ -49,7 +49,7 @@ module RailsTypeId
       # @return [TypeID]
       define_method :type_id do
         Helpers.validate_type_id_prefix!(self.class.type_id_prefix)
-        TypeID.from_string(self.id)
+        TypeID.from_string(id)
       end
 
       # If `id` is unset, generates a new UUID v7 TypeID and sets the `id` field
@@ -91,7 +91,7 @@ module RailsTypeId
         end
 
         def lookup_model(type_id)
-          prefix = TypeID.from_string(id).prefix
+          prefix = TypeID.from_string(type_id).prefix
           return if prefix.nil?
 
           prefix_map[prefix]
