@@ -14,11 +14,11 @@ bundle add rails_type_id
 
 ### Database requirements
 
-- ActiveRecord models should have an `id` field that is either a string-like type (`TEXT`, `VARCHAR`) or `UUID` if 
-  available. See [Migration](#migrating-existing-ids) if you have an existing `id` field.
+- ActiveRecord models should have an `id` field that is either a string-like type (`TEXT`, `VARCHAR`) .
+  See [Migration](#migrating-existing-ids) if you have an existing `id` field.
 
 ### Declaring on models
-Add `RailsTypeId::Concern` to the model. This model's `id` field should have either a String or UUID database column type.
+Add `RailsTypeId::Concern` to the model. This model's `id` field should have a string-like database column type.
 
 ```ruby
 # app/models/my_model.rb
@@ -38,26 +38,8 @@ Model instances will have a `type_id` field of type `TypeID`.
 
 ```ruby
 my_model = MyModel.create!(..)
-my_model.id             #=> "019867fe-560f-7941-a7ed-8472639c7ace"
+my_model.id             #=> "mm_01k1kzwngff50tfvc4e9hsrype"
 my_model.type_id        #=> #<TypeID mm_01k1kzwngff50tfvc4e9hsrype>
-my_model.type_id.to_s   #=> mm_01k1kzwngff50tfvc4e9hsrype
-```
-
-### Rails controllers
-
-`RailsTypeId::Concern` provides some helpers for interacting with Rails controllers.
-It automatically provides `to_param` that returns the stringified TypeID, so controller routes
-that use the model instance's ID should work automatically.
-
-When fetching an instance based on ID, `from_controller_id_param` deserializes the TypeID for you.
-
-```ruby
-# app/controllers/my_models_controller.rb
-class MyModelsController < ApplicationController
-    def show
-        @my_model = MyModel.from_controller_id_param(params[:id])
-    end
-end
 ```
 
 ### Testing
@@ -67,7 +49,7 @@ end
 ### Migrating existing IDs
 
 For models with an existing Rails `id` field (usually an auto-incrementing integer), you'll need to
-migrate these to either a string-like type or `uuid`. Below is an example migration for SQLite
+migrate these to either a string-like column type. Below is an example migration for SQLite
 using a `text` type for a Users model that has an associated Session.
 
 ```ruby
@@ -105,7 +87,6 @@ class MigrateUserToUUID < ActiveRecord::Migration[8.0]
     end
 end
 ```
-
 
 ## Development
 

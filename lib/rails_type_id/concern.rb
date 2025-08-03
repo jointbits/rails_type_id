@@ -42,27 +42,21 @@ module RailsTypeId
     included do
       attribute :id # Postgres UUID field
 
-      before_create :generate_uuid_v7
+      before_create :generate_type_id
       validates_with Validator
 
       # Returns the TypeID for the model
       # @return [TypeID]
       define_method :type_id do
         Helpers.validate_type_id_prefix!(self.class.type_id_prefix)
-        TypeID.from_uuid(self.class.type_id_prefix, id)
+        TypeID.from_string(self.id)
       end
 
-      # If `id` is unset, generates a new UUID v7 and sets it
+      # If `id` is unset, generates a new UUID v7 TypeID and sets the `id` field
       # @return [void]
-      define_method :generate_uuid_v7 do
-        case self.class.attribute_types["id"].type
-        when :uuid, :string
-          self.id ||= SecureRandom.uuid_v7
-        end
-      end
-
-      define_method :to_param do
-        type_id.to_s
+      define_method :generate_type_id do
+        Helpers.validate_type_id_prefix!(self.class.type_id_prefix)
+        self.id ||= TypeID.from_uuid(self.class.type_id_prefix, SecureRandom.uuid_v7).to_s
       end
     end
 
@@ -88,9 +82,8 @@ module RailsTypeId
           klasses = lookup_model(type_id)
           return if klasses.nil?
 
-          id = type_id # TODO: parse out the uuid part
           klasses.each do |klass|
-            result = klass.find_by(id: id)
+            result = klass.find_by(id: type_id)
             return result unless result.nil?
           end
 
@@ -98,22 +91,13 @@ module RailsTypeId
         end
 
         def lookup_model(type_id)
-          prefix = get_prefix(type_id)
+          prefix = TypeID.from_string(id).prefix
           return if prefix.nil?
 
           prefix_map[prefix]
         end
 
-        def get_prefix(id)
-          prefix, = parse_id(id)
-          prefix
-        end
-
         private
-
-        def parse_id(id)
-          id.split("_")
-        end
 
         def prefix_map
           Rails.application.eager_load!

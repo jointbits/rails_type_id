@@ -52,9 +52,6 @@ class TestRailsTypeIdCompiler < ActiveSupport::TestCase
         include RailsTypeIdMethods
 
         module RailsTypeIdMethods
-          sig { returns(String) }
-          def to_param; end
-
           sig { returns(TypeID) }
           def type_id; end
         end
