@@ -13,8 +13,6 @@ module RailsTypeId
     extend ::ActiveSupport::Concern
     include ::ActiveModel::Validations::Callbacks
 
-    class InvalidTypeIdPrefix < StandardError; end
-
     # Checks validity of the ActiveRecord model instances
     class Validator < ActiveModel::Validator
       def validate(record)
@@ -57,60 +55,6 @@ module RailsTypeId
       define_method :generate_type_id do
         Helpers.validate_type_id_prefix!(self.class.type_id_prefix)
         self.id ||= Helpers.generate_type_id(self.class.type_id_prefix).to_s
-      end
-    end
-
-    # Internal helper methods
-    class Helpers
-      extend T::Sig
-
-      class << self
-        def generate_type_id(prefix)
-          TypeID.from_uuid(prefix, SecureRandom.uuid_v7)
-        end
-
-        def validate_type_id_prefix(prefix)
-          return "type_id_prefix cannot be nil" if prefix.nil?
-
-          return nil if prefix.match(/\A[a-z]{1,10}\z/)
-
-          "type_id_prefix must be lowercase alphabetic (a-z) with length >= 1, <= 10"
-        end
-
-        def validate_type_id_prefix!(prefix)
-          result = validate_type_id_prefix(prefix)
-          raise InvalidTypeIdPrefix, result if result.present?
-        end
-
-        def lookup_type_id(type_id)
-          klasses = lookup_model(type_id)
-          return if klasses.nil?
-
-          klasses.each do |klass|
-            result = klass.find_by(id: type_id)
-            return result unless result.nil?
-          end
-
-          nil
-        end
-
-        def lookup_model(type_id)
-          prefix = TypeID.from_string(type_id).prefix
-          return if prefix.nil?
-
-          prefix_map[prefix]
-        end
-
-        private
-
-        def prefix_map
-          Rails.application.eager_load!
-          # This has to be group_by and not index_by because we can have multiple
-          # models that use the same prefix (like Settings)
-          @prefix_map ||= ActiveRecord::Base.descendants
-                                            .select { |klass| klass.respond_to?(:type_id_prefix) }
-                                            .group_by(&:type_id_prefix)
-        end
       end
     end
   end

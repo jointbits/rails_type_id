@@ -55,8 +55,8 @@ class TestConcern < ActiveSupport::TestCase
       "thisprefixiswaytoolong",
       "this has spaces"
     ].each do |prefix|
-      assert_raises(RailsTypeId::Concern::InvalidTypeIdPrefix) do
-        RailsTypeId::Concern::Helpers.validate_type_id_prefix!(prefix)
+      assert_raises(RailsTypeId::InvalidTypeIdPrefix) do
+        RailsTypeId::Helpers.validate_type_id_prefix!(prefix)
       end
     end
   end
