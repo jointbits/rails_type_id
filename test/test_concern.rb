@@ -39,7 +39,10 @@ class TestConcern < ActiveSupport::TestCase
     item_with = WithPrefix.create
     assert(item_with.valid?)
     assert_empty(item_with.errors)
+
     item_with = WithPrefix.create!
+    assert(item_with.id.start_with?("wp_"))
+
     type_id = item_with.type_id
     assert_equal(TypeID, type_id.class)
     assert_equal("wp", type_id.prefix)
@@ -56,10 +59,5 @@ class TestConcern < ActiveSupport::TestCase
         RailsTypeId::Concern::Helpers.validate_type_id_prefix!(prefix)
       end
     end
-  end
-
-  def test_to_param
-    item_with = WithPrefix.create!
-    assert(item_with.to_param.start_with?("wp_"))
   end
 end
