@@ -12,6 +12,11 @@ bundle add rails_type_id
 
 ## Usage
 
+### Database requirements
+
+- ActiveRecord models should have an `id` field that is either a string-like type (`TEXT`, `VARCHAR`) or `UUID` if 
+  available. See [Migration](#migrating-existing-ids) if you have an existing `id` field.
+
 ### Declaring on models
 Add `RailsTypeId::Concern` to the model. This model's `id` field should have either a String or UUID database column type.
 
@@ -37,6 +42,70 @@ my_model.id             #=> "019867fe-560f-7941-a7ed-8472639c7ace"
 my_model.type_id        #=> #<TypeID mm_01k1kzwngff50tfvc4e9hsrype>
 my_model.type_id.to_s   #=> mm_01k1kzwngff50tfvc4e9hsrype
 ```
+
+### Rails controllers
+
+`RailsTypeId::Concern` provides some helpers for interacting with Rails controllers.
+It automatically provides `to_param` that returns the stringified TypeID, so controller routes
+that use the model instance's ID should work automatically.
+
+When fetching an instance based on ID, `from_controller_id_param` deserializes the TypeID for you.
+
+```ruby
+# app/controllers/my_models_controller.rb
+class MyModelsController < ApplicationController
+    def show
+        @my_model = MyModel.from_controller_id_param(params[:id])
+    end
+end
+```
+
+### Testing
+
+`lib/rails_type_id/test_helpers.rb` contains some helper methods for writing wholesome tests.
+
+### Migrating existing IDs
+
+For models with an existing Rails `id` field (usually an auto-incrementing integer), you'll need to
+migrate these to either a string-like type or `uuid`. Below is an example migration for SQLite
+using a `text` type for a Users model that has an associated Session.
+
+```ruby
+class MigrateUserToUUID < ActiveRecord::Migration[8.0]
+    def change
+        add_column :users, :uuid, :text, null: true
+        add_column :sessions, :user_uuid, :text, null: true
+
+        Users.find_each do |u|
+            u.update(uuid: SecureRandom.uuid_v7)
+        end
+        Session.find_each do |s|
+            s.update(user_uuid: s.user.uuid)
+        end
+        change_column_null :users, :uuid, false
+        change_column_null :sessions, :user_uuid, false
+
+        remove_foreign_key :sessions, :users
+
+        rename_column :users, :id, :integer_id
+        rename_column :users, :uuid, :id
+
+        rename_column :sessions, :user_id, :integer_user_id
+        rename_column :sessions, :user_uuid, :user_id
+        change_column_null :session, :integer_user_id, true
+
+        execute "ALTER TABLE users DROP CONSTRAINT users_pkey;"
+        execute "ALTER_TABLE users ADD PRIMARY KEY (id);"
+
+        execute "ALTER TABLE ONLY users ALTER COLUMN integer_id DROP DEFAULT"
+        change_column_null :users, :integer_id, true
+        execute "DROP SEQUENCE IF EXISTS users_id_seq"
+
+        add_foreign_key :sessions, :users
+    end
+end
+```
+
 
 ## Development
 
