@@ -29,7 +29,9 @@ module RailsTypeId
       end
 
       def type_id_prefix
-        @_type_id_prefix
+        @_type_id_prefix ||
+          # Handle inheritance by bubbling up if type_id_prefix defined on superclass
+          (superclass.type_id_prefix if superclass.respond_to?(:type_id_prefix))
       end
 
       def from_controller_id_param(type_id_str)
