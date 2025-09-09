@@ -35,7 +35,7 @@ Gem::Specification.new do |spec|
 
   # Uncomment to register a new dependency of your gem
   # spec.add_dependency "example-gem", "~> 1.0"
-  spec.add_dependency "rails", "~> 8.0.2"
+  spec.add_dependency "rails", ">= 8.0.2"
   spec.add_dependency "sorbet-runtime"
   spec.add_dependency "typeid", "~> 0.2.2"
 end
