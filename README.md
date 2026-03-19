@@ -53,31 +53,31 @@ migrate these to either a string-like column type. Below is an example migration
 using a `text` type for a Users model that has an associated Session.
 
 ```ruby
-class MigrateUserToUUID < ActiveRecord::Migration[8.0]
+class MigrateUserToTypeId < ActiveRecord::Migration[8.0]
     def change
-        add_column :users, :uuid, :text, null: true
-        add_column :sessions, :user_uuid, :text, null: true
+        add_column :users, :type_id, :text, null: true
+        add_column :sessions, :user_type_id, :text, null: true
 
         Users.find_each do |u|
-            u.update(uuid: RailsTypeId::Concern::Helpers.generate_type_id("user"))
+            u.update(type_id: RailsTypeId::Helpers.generate_type_id("user"))
         end
         Session.find_each do |s|
-            s.update(user_uuid: s.user.uuid)
+            s.update(user_type_id: s.user.type_id)
         end
-        change_column_null :users, :uuid, false
-        change_column_null :sessions, :user_uuid, false
+        change_column_null :users, :type_id, false
+        change_column_null :sessions, :user_type_id, false
 
         remove_foreign_key :sessions, :users
 
         rename_column :users, :id, :integer_id
-        rename_column :users, :uuid, :id
+        rename_column :users, :type_id, :id
 
         rename_column :sessions, :user_id, :integer_user_id
-        rename_column :sessions, :user_uuid, :user_id
+        rename_column :sessions, :user_type_id, :user_id
         change_column_null :session, :integer_user_id, true
 
         execute "ALTER TABLE users DROP CONSTRAINT users_pkey;"
-        execute "ALTER_TABLE users ADD PRIMARY KEY (id);"
+        execute "ALTER TABLE users ADD PRIMARY KEY (id);"
 
         execute "ALTER TABLE ONLY users ALTER COLUMN integer_id DROP DEFAULT"
         change_column_null :users, :integer_id, true
