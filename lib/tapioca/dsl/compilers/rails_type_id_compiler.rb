@@ -19,7 +19,7 @@ module Tapioca
         class << self
           extend T::Sig
 
-          sig { override.returns(T::Enumerable[Module]) }
+          sig { override.returns(T::Enumerable[T::Module[T.anything]]) }
           def gather_constants
             all_classes
               .select { |c| c < RailsTypeId::Concern }
