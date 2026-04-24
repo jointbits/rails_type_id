@@ -88,6 +88,25 @@ class MigrateUserToTypeId < ActiveRecord::Migration[8.0]
 end
 ```
 
+#### MigrationHelper
+`RailsTypeId::MigrationHelper` auto-generates generate the migration steps.
+
+For the models `User` and `Session`:
+
+```
+setup_type_id(User, { Session => nil })
+# backfill the data into the new fields out of band
+migrate_to_type_id(User, { Session => nil })
+```
+
+For cases where you have a non-standard foreign key (let's say `session.logged_in_user_id`), you can pass it as the hash value:
+
+```
+setup_type_id(User, { Session => "logged_in_user" })
+# backfill the data into the new fields out of band
+migrate_to_type_id(User, { Session => "logged_in_user" })
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
