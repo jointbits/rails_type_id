@@ -1,6 +1,7 @@
+# typed: true
+# frozen_string_literal: true
 
 module RailsTypeId
-
   # MigrationHelper makes migrating a Rails model to type IDs a bit easier.
   module MigrationHelper
     extend T::Sig
@@ -8,8 +9,8 @@ module RailsTypeId
     # Sets up the type ID columns for `id` and dependent models
     sig do
       params(
-        model_klass: T.class_of(ApplicationRecord),
-        dependent_models: T::Hash[T.class_of(ApplicationRecord), T.nilable(String)],
+        model_klass: T.untyped,
+        dependent_models: T::Hash[T.untyped, T.nilable(String)]
       ).void
     end
     def setup_type_id(model_klass, dependent_models)
@@ -31,8 +32,8 @@ module RailsTypeId
     # Once data is backfilled, `migrate_to_type_id` takes care of swapping the columns
     sig do
       params(
-        model_klass: T.class_of(ApplicationRecord),
-        dependent_models: T::Hash[T.class_of(ApplicationRecord), T.nilable(String)],
+        model_klass: T.untyped,
+        dependent_models: T::Hash[T.untyped, T.nilable(String)]
       ).void
     end
     def migrate_to_type_id(model_klass, dependent_models)
@@ -41,7 +42,7 @@ module RailsTypeId
 
       change_column_null table_name, :type_id, false
 
-      dependent_models.each do |dm, _|
+      dependent_models.each_key do |dm|
         remove_foreign_key dm.table_name, table_name
       end
 
